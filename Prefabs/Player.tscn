@@ -86,3 +86,13 @@ texture = ExtResource( 2 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Weapon"]
 anims/RESET = SubResource( 3 )
 anims/attack = SubResource( 2 )
+
+[node name="Dodge" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="DodgeCooldown" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="Dodge" to="." method="_on_Dodge_timeout"]
