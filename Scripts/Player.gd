@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends "res://Scripts/Damageable.gd"
 
 export var speed := 200.0
 export var dodge_speed := 400.0
@@ -7,6 +7,9 @@ var input_velocity := Vector2(0.0, 0.0) # Describes the motion from keyboard inp
 var velocity := Vector2(0.0, 0.0) # Describes the total motion
 var dodging := false
 var dodge_vector := Vector2(0,0)
+
+func _ready():
+	pass
 
 func _physics_process(delta):
 	# Handle player input
