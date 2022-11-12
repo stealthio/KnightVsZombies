@@ -8,6 +8,9 @@ var velocity := Vector2(0.0, 0.0) # Describes the total motion
 var dodging := false
 var dodge_vector := Vector2(0,0)
 
+func _init():
+	add_to_group("PLAYER")
+
 func _ready():
 	pass
 
