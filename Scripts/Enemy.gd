@@ -9,9 +9,10 @@ enum States {
 	WAIT
 }
 
-export var speed = 25.0
-export var chase_speed = 75.0
+export var speed = 10.0
+export var chase_speed = 40.0
 export var aggro_range = 300.0
+export var received_knockback = 1000.0
 
 var current_state = States.IDLE
 
@@ -22,6 +23,12 @@ onready var player_ref = get_tree().get_nodes_in_group("PLAYER")[0]
 
 func _ready():
 	connect("on_death", self, "queue_free")
+	connect("on_damaged", self, "_knockback")
+
+func _knockback(origin_ref):
+	var origin : Vector2 = origin_ref.global_position
+	var dir = origin.direction_to(global_position)
+	velocity += dir * received_knockback
 
 func _reached_target_pos_check():
 	if global_position.distance_to(target_pos) < 1: # reached destination
@@ -65,4 +72,4 @@ func _physics_process(delta):
 
 		
 	move_and_slide(velocity)
-	velocity *= .5
+	velocity *= .75

@@ -4,7 +4,7 @@ export var hitpoints := 1.0 setget set_hitpoints
 
 var dead := false
 
-signal on_damaged
+signal on_damaged(by)
 signal on_death
 
 func set_hitpoints(value):
@@ -13,5 +13,6 @@ func set_hitpoints(value):
 		emit_signal("on_death")
 		dead = true
 
-func receive_damage(amount):
+func receive_damage(amount, by = null):
 	set_hitpoints(hitpoints - amount)
+	emit_signal("on_damaged", by)

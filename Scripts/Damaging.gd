@@ -9,7 +9,7 @@ func _ready():
 
 func on_body_entered(body : Node):
 	if body.get("hitpoints") and !damaged.has(body):
-		body.receive_damage(damage)
+		body.receive_damage(damage, self)
 		damaged.append(body)
 
 func activate():
