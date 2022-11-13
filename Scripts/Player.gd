@@ -21,7 +21,12 @@ func _init():
 	add_to_group("PLAYER")
 
 func _ready():
-	pass
+	connect("on_damaged", self, "_knockback")
+
+func _knockback(origin_ref):
+	var origin : Vector2 = origin_ref.global_position
+	var dir = origin.direction_to(global_position)
+	velocity += dir * 1000
 
 func _get_movement_input_vector():
 	input_velocity = Vector2(0.0, 0.0)
@@ -66,9 +71,10 @@ func _physics_process(delta):
 		States.DODGING:
 			velocity += dodge_vector.normalized() * dodge_speed
 	
-	if input_vector.x > 0: # flip the sprite to the target direction
+	
+	if get_global_mouse_position().x > global_position.x: # flip the sprite to the target direction
 		$Sprite.scale.x = -1
-	elif input_vector.x < 0:
+	elif get_global_mouse_position().x < global_position.x:
 		$Sprite.scale.x = 1
 	
 	move_and_slide(velocity)
