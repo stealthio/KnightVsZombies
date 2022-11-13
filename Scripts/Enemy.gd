@@ -38,6 +38,18 @@ func _reached_target_pos_check():
 func _player_in_range() -> bool:
 	return global_position.distance_to(player_ref.global_position) < aggro_range
 
+func _process(delta):
+	if get_node_or_null("AnimationPlayer"):
+		match(current_state):
+			States.IDLE:
+				$AnimationPlayer.play("Idle")
+			States.WAIT:
+				$AnimationPlayer.play("Idle")
+			States.CHASE:
+				$AnimationPlayer.play("Walk")
+			States.WALK:
+				$AnimationPlayer.play("Walk")
+
 func _physics_process(delta):
 	match(current_state):
 		States.IDLE:
@@ -50,16 +62,24 @@ func _physics_process(delta):
 				target_pos = Vector2(global_position.x + rand_range(-100, 100), global_position.y + rand_range(-100,100))
 			var dir = global_position.direction_to(target_pos)
 			velocity += dir * speed
-			
+			if dir.x > 0: # flip the sprite to the target direction
+				$Sprite.scale.x = -1
+			else:
+				$Sprite.scale.x = 1
 			_reached_target_pos_check()
+			if _player_in_range():
+				current_state = States.CHASE
 		States.CHASE:
 			if _player_in_range():
 				target_pos = player_ref.global_position
 			var dir = global_position.direction_to(target_pos)
+			if dir.x > 0: # flip the sprite to the target direction
+				$Sprite.scale.x = -1
+			else:
+				$Sprite.scale.x = 1
 			velocity += dir * chase_speed
 			
 			_reached_target_pos_check()
-
 		States.DAMAGED:
 			current_state = States.IDLE
 		States.DEAD:

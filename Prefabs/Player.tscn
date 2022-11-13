@@ -1,13 +1,19 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Scripts/Weapon.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Damaging.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Player/Player1.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Player/Player2.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Player/Player3.png" type="Texture" id=7]
+[ext_resource path="res://Assets/Player/Player4.png" type="Texture" id=8]
+[ext_resource path="res://Assets/Player/Player6.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Player/Player7.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Player/Player5.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Player/Player8.png" type="Texture" id=12]
 
-[sub_resource type="CapsuleShape2D" id=1]
-radius = 17.0
-height = 0.0
+[sub_resource type="RectangleShape2D" id=8]
 
 [sub_resource type="RectangleShape2D" id=5]
 extents = Vector2( 36, 36 )
@@ -85,16 +91,66 @@ tracks/2/keys = {
 } ]
 }
 
+[sub_resource type="Animation" id=6]
+resource_name = "Idle"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 5 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ ExtResource( 5 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "Walk"
+length = 0.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 11 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 11 ) ]
+}
+
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
 speed = 100.0
 
 [node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+texture = ExtResource( 5 )
+offset = Vector2( -8, -10 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+position = Vector2( 0, 12 )
+shape = SubResource( 8 )
 
 [node name="Weapon" type="Node2D" parent="."]
 script = ExtResource( 3 )
@@ -122,5 +178,10 @@ one_shot = true
 [node name="DodgeCooldown" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle = SubResource( 6 )
+anims/RESET = SubResource( 7 )
+anims/Walk = SubResource( 9 )
 
 [connection signal="timeout" from="Dodge" to="." method="_on_Dodge_timeout"]
